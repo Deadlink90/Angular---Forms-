@@ -1,0 +1,259 @@
+<h4 class="my-2">Formularios <small> reactivos </small></h4>
+<hr />
+
+<form autocomplete="off" [formGroup]="forma" (submit)="sendReactive()">
+  <div class="row my-2">
+    <label class="col-2 col-form-label">Nombre:</label>
+    <div class="col-8">
+      <input
+        class="form-control"
+        type="text"
+        placeholder="Nombre"
+        name="nombre"
+        formControlName="nombre"
+        [class.is-invalid]="nombreValidator"
+      />
+
+      <small
+        class="form-text text-danger"
+        *ngIf="nombreValidator && forma.get('nombre')?.errors?.['required']"
+        >Este campo es obligatorio</small
+      >
+
+      <small
+        class="form-text text-danger"
+        *ngIf="nombreValidator && forma.get('nombre')?.errors?.['minlength']"
+        >Ingrese al menos 5 caracteres</small
+      >
+    </div>
+  </div>
+
+  <div class="row my-2">
+    <label class="col-2 col-form-label">Apellido:</label>
+    <div class="col-8">
+      <input
+        class="form-control"
+        [class.is-invalid]="apellidoValidator"
+        type="text"
+        placeholder="Apellido"
+        name="apellido"
+        formControlName="apellido"
+      />
+
+      <small
+        class="form-text text-danger"
+        *ngIf="apellidoValidator && checkErrors('apellido', 'required')"
+        >Este campo es obligatorio</small
+      >
+
+      <small
+        class="form-text text-danger"
+        *ngIf="apellidoValidator && checkErrors('apellido', 'minlength')"
+        >Ingrese al menos 5 caracteres</small
+      >
+
+      <small
+        class="form-text text-danger"
+        *ngIf="apellidoValidator && checkErrors('apellido', 'noHerrera')"
+        >No seleccionar Herrera</small
+      >
+    </div>
+  </div>
+
+  <div class="row my-2">
+    <label class="col-2 col-form-label">Correo</label>
+    <div class="col-8">
+      <input
+        class="form-control"
+        type="email"
+        [class.is-invalid]="correoValidator"
+        placeholder="Correo electrónico"
+        name="correo"
+        formControlName="correo"
+        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+      />
+
+      <small
+        class="form-text text-danger"
+        *ngIf="correoValidator && checkErrors('correo', 'required')"
+        >Este campo es obligatorio</small
+      >
+
+      <small
+        class="form-text text-danger"
+        *ngIf="correoValidator && checkErrors('correo', 'pattern')"
+        >Correo no valido</small
+      >
+    </div>
+  </div>
+
+  <div class="row my-2">
+    <label class="col-2 col-form-label">Usuario</label>
+    <div class="col-8">
+      <input
+        class="form-control"
+        type="email"
+        [class.is-invalid]="usuarioNoValido"
+        placeholder="Nombre de usuario"
+        name="usuario"
+        formControlName="usuario"
+      />
+
+      <small
+        class="form-text text-danger"
+        *ngIf="usuarioNoValido && checkErrors('usuario', 'existe')"
+        >Nombre de usuario ya utilizado, seleccione otro.</small
+      >
+
+      <small
+        class="form-text text-danger"
+        *ngIf="correoValidator && checkErrors('correo', 'pattern')"
+        >Correo no valido</small
+      >
+    </div>
+  </div>
+
+  <div class="row my-2">
+    <label class="col-2 col-form-label">Contraseña</label>
+    <div class="col-8">
+      <input
+        class="form-control"
+        type="password"
+        placeholder="Contraseña"
+        formControlName="pass1"
+        [class.is-invalid]="pass1Validator"
+      />
+
+      <small
+        class="form-text text-danger"
+        *ngIf="pass1Validator && checkErrors('pass1', 'minlength')"
+        >Ingrese al menos 5 caracteres</small
+      >
+
+      <small
+        class="form-text text-danger"
+        *ngIf="pass1Validator && checkErrors('pass1', 'required')"
+        >Este campo es obligatorio</small
+      >
+    </div>
+  </div>
+
+  <div class="row my-2">
+    <label class="col-2 col-form-label">Repita</label>
+    <div class="col-8">
+      <input
+        [class.is-invalid]="pass2Validator && forma.get('pass2')?.touched"
+        class="form-control"
+        type="password"
+        placeholder="Repetir contraseña"
+        formControlName="pass2"
+      />
+
+      <small
+        class="form-text text-danger"
+        *ngIf="pass2Validator && checkErrors('pass2', 'required') && forma.get('pass2')?.touched"
+        >Este campo es obligatorio</small
+      >
+
+      <small
+        class="form-text text-danger"
+        *ngIf="pass2Validator && checkErrors('pass2', 'noEsIgual') && forma.get('pass2')?.touched"
+        >Ingrese la misma contraseña</small
+      >
+
+    </div>
+  </div>
+
+  <div class="row my-2" formGroupName="direccion">
+    <label class="col-2 col-form-label">Direccion</label>
+
+    <div class="col-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Ciudad"
+        formControlName="ciudad"
+        [class.is-invalid]="ciudadValidator"
+      />
+      <small class="form-text text-danger" *ngIf="ciudadValidator"
+        >Ingrese 5 letras</small
+      >
+    </div>
+
+    <div class="col-5">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Distrito"
+        formControlName="distrito"
+        [class.is-invalid]="distritoValidator"
+      />
+
+      <small class="form-text text-danger" *ngIf="distritoValidator"
+        >Ingrese 5 letras</small
+      >
+    </div>
+  </div>
+
+  <div class="row my-2">
+    <div class="col">
+      <table class="table table-dark">
+        <thead class="thead-dark">
+          <tr>
+            <th>Id</th>
+            <th>Pasatiempo</th>
+            <th>Borrar</th>
+          </tr>
+        </thead>
+        <tbody formArrayName="pasatiempos">
+          <tr *ngFor="let control of pasatiempos.controls; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>
+              <input type="text" class="form-control" [formControlName]="i" />
+            </td>
+            <td>
+              <button
+                class="btn btn-danger w-100"
+                type="button"
+                (click)="borrarPasatiempo(i)"
+              >
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button
+        class="btn btn-primary w-100 mb-5"
+        type="button"
+        (click)="agregarPasatiempo()"
+      >
+        + Agregar
+      </button>
+    </div>
+  </div>
+
+  <div class="row my-2">
+    <div class="col-md-8 offset-md-2">
+      <button type="submit" class="btn btn-outline-primary btn-block w-100">
+        Guardar
+      </button>
+    </div>
+  </div>
+</form>
+
+<hr />
+<pre>
+Estado del formulario: {{ forma.valid }}
+Status: {{ forma.status }}
+</pre>
+
+<pre
+  >{{ forma.value | json }}
+</pre>
+
+<hr />
+<pre>
+ {{ forma.get("pass2")?.errors | json }} 
+</pre>
